@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnimeFlix - Animes da Temporada</title>
+    <style>
+        /* Estilos gerais */
+        body {
+            font-family:'Courier New', Courier, monospace   
+            margin: 0;
+            padding: 0;
+            background-color: #181818;
+            color: white;
+        }
+
+        header {
+            background-color: #6a0dad;
+            padding: 20px;
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            text-align: center;
+            background-color: #4b0082;
+            margin: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        /* Seção de introdução */
+        .intro-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+        }
+
+        .intro-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            filter: blur(5px);
+            z-index: 1;
+        }
+
+        .intro-text {
+            position: relative;
+            z-index: 2;
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        /* Estilos do carrossel */
+        .carousel-container {
+            display: flex;
+            overflow-x: hidden;
+            position: relative;
+            gap: 20px;
+        }
+
+        .carousel {
+            display: flex;
+            gap: 20px;
+            transition: transform 0.5s ease;
+        }
+
+        .anime-item {
+            background-color: #2d2d2d;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            flex: 0 0 200px;
+        }
+
+        .anime-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.3);
+        }
+
+        .anime-item img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            font-size: 24px;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .carousel-btn-left {
+            left: 10px;
+        }
+
+        .carousel-btn-right {
+            right: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #6a0dad;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        AnimeFlix - Animes da Temporada
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="#">Início</a></li>
+            <li><a href="#">Animes da Temporada</a></li>
+            <li><a href="#">Contato</a></li>
+        </ul>
+    </nav>
+    
+    <!-- Seção de Introdução -->
+    <div class="intro-container">
+        <div class="intro-background" style="background: url('animes.jpg') no-repeat center center/cover;"></div>
+        <div class="intro-text">
+            <h2>Bem-vindo ao AnimeFlix!</h2>
+            <p>Descubra os melhores animes da temporada, atualizações diárias, estreias e muito mais! Aqui você encontra tudo sobre os animes mais populares, suas datas de lançamento, sinopses e trailers.</p>
+            <p>Fique por dentro das novidades e não perca nenhuma estreia! Nossa plataforma traz os melhores conteúdos para você.</p>
+        </div>
+    </div>
+
+    <!-- Seção de Animes em Destaque -->
+    <div class="container">
+        <h2>Animes em Destaque</h2>
+        
+        <!-- Carrossel de Animes -->
+        <div class="carousel-container">
+            <button class="carousel-btn carousel-btn-left" onclick="moveCarousel(-1)">&#10094;</button>
+            <div class="carousel" id="anime-list">
+                <!-- Lista de animes será carregada aqui -->
+            </div>
+            <button class="carousel-btn carousel-btn-right" onclick="moveCarousel(1)">&#10095;</button>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 AnimeFlix. Todos os direitos reservados.</p>
+    </footer>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const animes = [
+                { titulo: "Solo Leveling", imagem: "solo leveling.jpg", descricao: "Um caçador fraco se torna o mais forte do mundo." },
+                { titulo: "Jujutsu Kaisen", imagem: "Jujutsu-kaisen.webp", descricao: "Feiticeiros lutam contra maldições em um mundo sombrio." },
+                { titulo: "One Piece", imagem: "one piece.webp", descricao: "Luffy e sua tripulação buscam o tesouro supremo." },
+                { titulo: "Attack on Titan", imagem: "attack on titan.webp", descricao: "Humanidade luta contra titãs colossais." },
+                { titulo: "My Hero Academia", imagem: "my hero academia.jpg", descricao: "Jovens heróis treinam para salvar o mundo." },
+                { titulo: "Demon Slayer", imagem: "DemonSlayer.webp", descricao: "Luta contra demônios e busca de vingança." }
+            ];
+
+            const animeList = document.getElementById("anime-list");
+
+            animes.forEach(anime => {
+                const animeDiv = document.createElement("div");
+                animeDiv.classList.add("anime-item");
+                animeDiv.innerHTML = `
+                    <img src="${anime.imagem}" alt="${anime.titulo}">
+                    <h3>${anime.titulo}</h3>
+                    <p>${anime.descricao}</p>
+                `;
+                animeList.appendChild(animeDiv);
+            });
+        });
+
+        let carouselIndex = 0;
+
+        function moveCarousel(direction) {
+            const carousel = document.querySelector('.carousel');
+            const items = document.querySelectorAll('.anime-item');
+            const totalItems = items.length;
+            carouselIndex = (carouselIndex + direction + totalItems) % totalItems;
+            const offset = -carouselIndex * (items[0].offsetWidth + 20);
+            carousel.style.transform = `translateX(${offset}px)`;
+        }
+    </script>
+</body>
+</html>
